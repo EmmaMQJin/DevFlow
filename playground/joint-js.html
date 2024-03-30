@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jointjs/3.4.2/joint.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jointjs/3.4.2/joint.min.js"></script>
+</head>
+<body>
+    <div id="myholder"></div>
+    <script>
+        var graph = new joint.dia.Graph();
+        var paper = new joint.dia.Paper({
+            el: document.getElementById('myholder'),
+            model: graph,
+            width: 600,
+            height: 400,
+            gridSize: 10
+        });
+
+        var rect1 = new joint.shapes.standard.Rectangle();
+        rect1.position(100, 30);
+        rect1.resize(100, 40);
+        rect1.addTo(graph);
+
+        var rect2 = new joint.shapes.standard.Rectangle();
+        rect2.position(300, 30);
+        rect2.resize(100, 40);
+        rect2.addTo(graph);
+
+        var link = new joint.shapes.standard.Link();
+        link.source(rect1);
+        link.target(rect2);
+        link.addTo(graph);
+    </script>
+</body>
+</html>
