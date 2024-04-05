@@ -6,11 +6,14 @@ function App() {
   // TODO: how to make the relevant files pop up?
   const [files] = useState([
     { name: "example.js", content: "// JavaScript content",
-      linesToColor: {"1" : [1, 2, 3, 4, 5],
+      linesToColor: {"-1": [],
+                     "1" : [1, 2, 3, 4, 5],
                      "2" : [1, 2, 3]} },
     { name: "example.py", content: "# Python content", 
-      linesToColor: {"1" : [4, 5, 6, 7],
-                     "2" : [2, 3]} },
+      linesToColor: {"-1": [],
+                     "1" : [4, 5, 6, 7, 8, 9, 10],
+                     "2" : [2, 3],
+                     "3" : []} },
   ]);
 
   // State to keep track of the currently selected file
@@ -22,8 +25,9 @@ function App() {
     files[fileIndex].content = newFile.content;
   }, [currentFile]);
 
-  const outlineID = "2";
-  const colorToUse = "red";
+
+  const outlineID = "-1";
+  const colorToUse = "blue";
   return (
     <div className="App">
       <div className='dummy-div'>
