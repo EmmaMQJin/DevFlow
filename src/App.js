@@ -3,10 +3,14 @@ import Editor from './components/editor/editor';
 import './App.css'
 
 function App() {
+  // TODO: how to make the relevant files pop up?
   const [files] = useState([
-    { name: "example.js", content: "// JavaScript content", linesToColor: [1, 2, 3, 4, 5, 10] },
-    { name: "example.py", content: "# Python content", linesToColor: [4, 5, 6, 7] },
-    // Add more files as needed
+    { name: "example.js", content: "// JavaScript content",
+      linesToColor: {"1" : [1, 2, 3, 4, 5],
+                     "2" : [1, 2, 3]} },
+    { name: "example.py", content: "# Python content", 
+      linesToColor: {"1" : [4, 5, 6, 7],
+                     "2" : [2, 3]} },
   ]);
 
   // State to keep track of the currently selected file
@@ -18,9 +22,13 @@ function App() {
     files[fileIndex].content = newFile.content;
   }, [currentFile]);
 
+  const outlineID = "2";
   const colorToUse = "red";
   return (
     <div className="App">
+      <div className='dummy-div'>
+        <p> This is a dummy block -------------------!</p>
+      </div>
       <div className='editor-window'>
         <div className="file-selector">
           {files.map(file => (
@@ -29,7 +37,7 @@ function App() {
             </button>
           ))}
         </div>
-        <Editor linesToColor={currentFile.linesToColor} colorToUse={colorToUse} currentFile={currentFile} onContentChange={handleContentChange} />
+        <Editor linesToColor={currentFile.linesToColor[outlineID]} colorToUse={colorToUse} currentFile={currentFile} onContentChange={handleContentChange} />
       </div>
     </div>
   );

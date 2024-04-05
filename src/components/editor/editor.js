@@ -80,7 +80,7 @@ const Editor = ({ linesToColor, colorToUse, currentFile, onContentChange }) => {
     return () => {
       view.destroy();
     };
-  }, [currentFile.name, currentFile.linesToColor]); // Dependency array to re-initialize the editor if linesToColor change
+  }, [currentFile.name, linesToColor]); //, currentFile.linesToColor Dependency array to re-initialize the editor if linesToColor change
 
   return <div ref={editorRef} className='editor-div' />;
 };
