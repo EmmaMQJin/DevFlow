@@ -4,6 +4,7 @@ import { EditorView, gutter, GutterMarker, lineNumbers } from '@codemirror/view'
 import { basicSetup } from '@uiw/codemirror-extensions-basic-setup';
 import { javascript } from '@codemirror/lang-javascript';
 import { python } from '@codemirror/lang-python';
+import './editor.css';
 
 // Function to determine the language extension based on the file name
 const getLanguageExtension = (fileName) => {

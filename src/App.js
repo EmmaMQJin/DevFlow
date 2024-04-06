@@ -91,7 +91,7 @@ function App() {
 
 
   const outlineID = "2";
-  const colorToUse = "red";
+  const colorToUse = "#7F83D3"; // #FF9999, #FFEA99, #32D4CC
   return (
     <div className="App">
       <div className='dummy-div'>

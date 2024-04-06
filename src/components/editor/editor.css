@@ -1,0 +1,12 @@
+.ͼ2 .cm-gutters {
+    background-color: #222222;
+}
+
+.ͼ1 .cm-gutterElement {
+    color: #B69DCF;
+    font-weight: bold;
+}
+
+.ͼ2 .cm-activeLineGutter {
+    background-color: #8D6EAC;
+}
