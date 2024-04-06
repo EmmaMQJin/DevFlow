@@ -1,0 +1,23 @@
+"""
+file for defining all APIs and endpoints used,
+as well as related utils
+"""
+from parse import parse_info
+
+def get_delivery(info):
+  # define doordash deliveries endpoint
+  endpoint = "https://openapi.doordash.com/drive/v2/deliveries/"
+
+  headers = {"Accept-Encoding": "application/json",
+             "Authorization": "Bearer " + token,
+             "Content-Type": "application/json"}
+
+  # Create POST request
+  create_delivery = requests.post(endpoint, headers=headers, json=info) 
+
+
+def read_menu(filename):
+  # read and parse menu txt
+  with open(filename, 'r', 'utf-8') as file:
+    lines = file.readlines()
+    parse_info(lines)
