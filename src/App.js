@@ -91,7 +91,7 @@ function App() {
 
 
   const outlineID = "2";
-  const colorToUse = "blue";
+  const colorToUse = "red";
   return (
     <div className="App">
       <div className='dummy-div'>
@@ -101,7 +101,7 @@ function App() {
         <div className="file-selector">
           {files.map((file) =>  {
             const is_highlighted = (file.linesToColor[outlineID].length !== 0);
-            const is_hidden = outlineID !== "1" && file.name === "setup.py";
+            const is_hidden = outlineID !== "2" && file.name === "setup.py";
             const buttonStyle = is_highlighted ? { borderBottom: `5px solid ${colorToUse}` } : {};
             const buttonClass = is_hidden ? "filename-button-hidden" : "filename-button";
 
