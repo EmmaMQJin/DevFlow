@@ -21,3 +21,11 @@
   width: 100%;
   height: 100%;
 }
+
+.filename-button {
+  width: 100px;
+}
+
+.filename-button-hidden {
+  display: none;
+}
