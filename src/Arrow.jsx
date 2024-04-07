@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import Xarrow from "react-xarrows";
-// import "./styles.css";
+
 
 const connectPointStyle = {
   position: "absolute",

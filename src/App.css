@@ -1,31 +1,448 @@
-.App {
-  display: flex;
-  width: 100%;
-  flex-direction: row;
-}
-
-.file-selector {
-  display: flex;
-  flex-direction: row;
-  height: 30px;
-}
-
-.editor-window {
+/** @format */
+.vscode-app {
   display: flex;
   flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins";
+  background-color: #1e1e1e;
+  color: #fff;
+}
+
+.vscode-header {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #333;
+}
+
+.logo {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.menu {
+  margin-left: 15px;
+}
+
+.menu a {
+  text-decoration: none;
+  font-size: 12px;
+  color: #adadad;
+  margin-right: 10px;
+}
+
+.menu a:hover {
+  color: #eceaea; /* Slightly lighter text on hover */
+}
+
+.search-bar {
+  flex-grow: 1;
+  margin-left: auto;
+}
+
+.search-bar input {
+  padding: 5px;
+  border: 1px solid #444;
+  border-radius: 3px;
+  background-color: #222;
+  color: #fff;
+}
+
+.vscode-main {
+  display: flex;
+  flex: 1;
+}
+
+.sidebar {
+  width: 25px;
+  padding: 10px;
+  border-right: 1px solid #444; /* Border color adjusted for dark mode */
+  background-color: #222; /* Sidebar background for dark mode */
+}
+
+.explorer,
+.debug,
+.extensions {
+  margin-bottom: 15px;
+  color: #747474; /* Light text for sidebar elements */
+}
+
+.material-symbols-outlined:hover {
+  color: #dbdbdb;
+  cursor: pointer;
+}
+
+.editor {
+  flex: 1;
+  padding: 10px;
+  background-color: #1e1e1e; /* Editor background for dark mode */
+  color: #fff; /* Light text for editor */
+}
+
+/* editor placeholder */
+.editor-placeholder {
+  text-align: left;
+  padding-left: 20px;
+}
+
+.placeholder-header {
+  font-weight: 500;
+  font-size: 20px;
+  margin-bottom: 5px;
+  color: #fff;
+}
+
+.primary-button,
+.secondary-button {
+  display: inline-block;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  color: #fff;
+}
+
+.or {
+  font-size: 12px;
+  color: #fff;
+}
+
+.primary-button {
+  background-color: #502d74; /* Target color */
+}
+
+.secondary-button {
+  background-color: #5b3384; /* Darker background for secondary button */
+}
+
+.primary-button:hover,
+.secondary-button:hover {
+  background-color: #585858; /* Slightly darker shade on hover */
+}
+
+.button-label {
+  margin-top: 5px;
+  font-size: 10px;
+  color: #747474; /* Light text for sidebar elements */
+}
+
+.recent-files {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+}
+
+.recent-files,
+.faq {
+  list-style: none; /* Removes default bullet points */
+  padding: 0; /* Removes default padding */
+  margin: 0; /* Removes default margin */
+  font-size: 13px; /* Reduces font size */
+}
+
+.recent-files li,
+.faq li {
+  margin-bottom: 4px; /* Add spacing between list items */
+}
+
+.recent-files a,
+.faq a {
+  text-decoration: none; /* Removes underline for links */
+  color: #747474; /* Light text for sidebar elements */
+  font-size: 13px;
+}
+
+.recent-files a:hover,
+.faq a:hover {
+  color: #fff; /* Changes text color to white on hover */
+}
+
+/* Editor New Code */
+.help {
+  font-size: large;
+  position: relative;
+  left: 20%;
+  color: #646464;
+}
+
+.primary-button:focus {
+  background-color: #732fb7; /* Change background color for active button */
+  color: #ffffff; /* Change text color for active button */
+  border: #B69DCF solid 2px;
+  font-weight: medium; /* Optionally, make text bold for active button */
+}
+
+.folder-toggle {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.folder-toggle.open .material-symbols-outlined {
+  transform: rotate(90deg);
+}
+
+.style-buttons {
+  display: flex;
+}
+
+.editor-placeholder {
+  text-align: left;
+  padding-left: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.folder-structure {
+  position: absolute;
+  top: calc(90px + 50px);
+  left: 0;
   width: 100%;
-  height: 100%;
 }
 
-.dummy-div {
-  width: 100%;
-  height: 100%;
+.folder-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5px;
+  padding-left: 10px;
 }
 
-.connectPoint {
-  opacity: 0.2;
+.folder-name {
+  margin-left: 5px; /* Add margin between icon and folder name */
 }
 
-.connectPoint:hover {
-  opacity: 0.6;
+.subfolders {
+  list-style: none;
+  padding-left: 20px;
+  margin-top: 5px;
+}
+
+.subfolder-item {
+  margin-bottom: 4px;
+}
+
+.subfolder-item a {
+  text-decoration: none;
+  color: #747474; /* Light text for subfolder items */
+  font-size: 13px;
+}
+
+.subfolder-item a:hover {
+  color: #fff; /* Changes text color to white on hover */
+}
+
+.editor-buttons {
+  position: absolute;
+  bottom: 10px;
+  right: 20px;
+}
+
+.edit-outline-container {
+  position: absolute;
+  top:90%;
+  margin-left: 20px;
+
+}
+
+/* Terminal */
+.terminal {
+  width: 65%;
+  padding: 10px;
+  border-left: 1px solid #444; /* Border color adjusted for dark mode */
+  background-color: #222; /* Terminal background for dark mode */
+  color: #fff; /* Light text for terminal */
+}
+
+/* Terminal Placeholder */
+.terminal-placeholder {
+  text-align: left;
+}
+
+.terminal-heading {
+  margin-bottom: -25px;
+  padding-left: 20px;
+  color: #fff;
+  font-size: 48px; /* Adjust font size for heading */
+  font-weight: medium;
+}
+
+.terminal-subheading {
+  margin-bottom: 20px;
+  padding-left: 20px;
+  color: #aaa; /* Lighter color for subheading */
+  font-size: 14px; /* Adjust font size for subheading */
+}
+
+.terminal-button {
+  display: block; /* Makes buttons stack vertically */
+  width: calc(100% - 100px); /* Subtract padding for full width */
+  margin-left: 20px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  color: #fff;
+  background-color: #171717; /* Dark background color for buttons */
+  margin-bottom: 10px;
+}
+
+.terminal-button:hover {
+  background-color: #444; /* Slightly darker shade on hover */
+}
+
+.terminal-button:last-child {
+  /* Remove margin for last button */
+  margin-bottom: 0;
+}
+
+.vscode-footer {
+  text-align: center;
+  padding: 10px;
+  background-color: #222; /* Footer background for dark mode */
+  color: #fff; /* Light text for footer */
+}
+
+/* OutlineEditor Page */
+.outline-editor {
+  /* Adjust styles as needed */
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff; /* Light background for editor */
+  color: #333; /* Dark text for editor */
+}
+
+.editor-placeholder {
+  text-align: left;
+  padding-left: 20px;
+}
+
+.style-buttons {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.primary-button {
+  /* Refer to existing styles (consider including the path if necessary) */
+  margin-right: 10px;
+}
+
+.outline-dropdown {
+  width: 100%; /* Make dropdown fill the available space */
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px; /* Adjust font size for dropdown */
+}
+
+/* Popup Styles */
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  padding: 20px;
+  background-color: #333; /* Popup background color */
+  color: #fff; /* Popup text color */
+  border-radius: 5px;
+  z-index: 9999; /* Ensure popup is on top of other elements */
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.popup-title {
+  font-size: 20px;
+  margin: 0;
+}
+
+.popup-close {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.folder {
+  display: flex;
+  align-items: center;
+}
+
+.folder-name {
+  margin-left: 5px;
+  font-size: 14px; /* Reduce font size */
+}
+
+.subfolders {
+  list-style: none;
+  padding-left: 20px;
+  margin-top: 5px;
+}
+
+.subfolder-item {
+  margin-bottom: 4px;
+  font-size: 13px; /* Reduce font size */
+}
+
+.subfolder-item a {
+  text-decoration: none;
+  color: #747474; /* Light text for subfolder items */
+  font-size: 13px; /* Adjust font size for subfolder items */
+}
+
+.subfolder-item a:hover {
+  color: #fff; /* Changes text color to white on hover */
+}
+
+.sub-subfolders {
+  list-style: none;
+  padding-left: 20px;
+  margin-top: 5px;
+}
+
+.sub-subfolder {
+  display: flex;
+  align-items: center;
+}
+
+.sub-subfolder .folder-name {
+  margin-left: 5px;
+  font-size: 13px; /* Reduce font size */
+}
+.popup-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.popup-button {
+  padding: 8px 16px;
+  margin-left: 10px;
+  background-color: #5b3384; /* Button background color */
+  color: #fff; /* Button text color */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.popup-button:hover {
+  background-color: #732fb7; /* Darker shade on hover */
+}
+
+.popup-button.cancel {
+  background-color: #444; /* Different background color for cancel button */
 }
