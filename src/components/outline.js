@@ -142,19 +142,19 @@ export function Outline(props) {
       content: api_contents,
       linesToColor: {
         "-1": [],
-        1: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
-        2: [19, 20, 21, 22, 23],
+        "1": [7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+        "2": [19, 20, 21, 22, 23],
       },
     },
     {
       name: "parse.py",
       content: parse_contents,
-      linesToColor: { "-1": [], 1: [], 2: [6, 7, 8, 9, 10, 11, 12] },
+      linesToColor: { "-1": [], "1": [], "2": [6, 7, 8, 9, 10, 11, 12] },
     },
     {
       name: "setup.py",
       content: "# Python content\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
-      linesToColor: { "-1": [], 1: [], 2: [6, 7, 8] },
+      linesToColor: { "-1": [], "1": [], "2": [6, 7, 8] },
     },
   ]);
 
@@ -232,7 +232,7 @@ export function Outline(props) {
               <span className="material-symbols-outlined help">help</span>
             </h1>
             <div className="style-buttons">
-              <button
+              {/* <button
                 className={`primary-button ${
                   activeButton === "bulletList" ? "active" : ""
                 }`}
@@ -247,7 +247,7 @@ export function Outline(props) {
                 onClick={() => handleButtonClick("canvas")}
               >
                 Canvas
-              </button>
+              </button> */}
 
               <FolderStructure
                 folders={folders}
@@ -353,11 +353,16 @@ export function Outline(props) {
     const folderHeight = isExpanded ? 30 + folder.children.length * 20 : 30;
     const top = index === 0 ? 0 : totalHeight;
 
-    const handleSubfolderClick = () => {
-      if (outlineID === "-1") {
+    const handleSubfolderClick = (e, subfolderName) => {
+      e.preventDefault();
+      console.log(subfolderName);
+      if (subfolderName === "Connect Doordash API") {
         // When outlineID is -1, set it to 2 and colorToUse to blue
+        setOutlineID("1");
+        setColorToUse("#7F83D3");
+      } else if (subfolderName === "Read Menu to JSON") {
         setOutlineID("2");
-        setColorToUse("blue");
+        setColorToUse("#FFEA99");
       } else {
         // When outlineID is not -1, set it to -1 and colorToUse to red
         setOutlineID("-1");
@@ -394,7 +399,7 @@ export function Outline(props) {
           <ul className="subfolders" {...getCollapseProps()}>
             {folder.children.map((subfolder) => (
               <li key={subfolder.name} className="subfolder-item">
-                <a href="#" onClick={handleSubfolderClick}>
+                <a href="#" onClick={(e) => handleSubfolderClick(e, subfolder.name)}>
                   <Box
                     text={subfolder.name}
                     {...{ addArrow, handler: "right", boxId: "box2_1" }}
@@ -450,7 +455,7 @@ export function Outline(props) {
         </div>
         <div className="popup-footer">
           <button className="popup-button cancel">Cancel</button>
-          <button className="popup-button save">Save</button>
+          <button className="popup-button save" onClick={onClose}>Save</button>
         </div>
       </div>
     );
