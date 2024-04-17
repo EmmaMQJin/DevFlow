@@ -231,7 +231,17 @@ export function Outline(props) {
               Outline
               <span className="material-symbols-outlined help">help</span>
             </h1>
-            <div className="style-buttons">
+
+            <div className="instructions">
+            ⦿ Drag from a white dot next to any outline item to any lines of code to link snippets of code to this item.<br></br>
+            ⦿ Click any outline item to see code snippets linked to it.
+            </div>
+            <FolderStructure
+                folders={folders}
+                onToggleFolder={toggleFolder}
+            />
+          </div>
+            {/* <div className="style-buttons"> */}
               {/* <button
                 className={`primary-button ${
                   activeButton === "bulletList" ? "active" : ""
@@ -248,14 +258,8 @@ export function Outline(props) {
               >
                 Canvas
               </button> */}
-
-              <FolderStructure
-                folders={folders}
-                onToggleFolder={toggleFolder}
-              />
-            </div>
+            {/* </div> */}
             {/* Folder structure component */}
-          </div>
           <div className="edit-outline-container">
             {/* Popup Code */}
             <button
