@@ -179,6 +179,7 @@
   
   .folder-toggle {
     display: flex;
+    flex-direction: row;
     align-items: center;
     cursor: pointer;
   }
@@ -202,7 +203,7 @@
   
   .folder-structure {
     position: absolute;
-    top: 200px;
+    top: 150px;
     /* left: 0; */
     width: 100%;
   }
@@ -213,6 +214,51 @@
     margin-bottom: 5px;
     padding-left: 10px;
   }
+
+  /* The tooltip text container */
+.folder-toggle .tooltip-text {
+  visibility: hidden;
+  width: 160px;  /* Adjust width as needed */
+  background-color: rgba(91, 51, 132, 0.2);
+  color: white;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  /* z-index: 1;
+  top: 0;
+  right: 0; */
+  transform: translateX(120%);
+}
+
+/* Tooltip visibility on hover */
+.folder-toggle:hover .tooltip-text {
+  visibility: visible;
+}
+
+/* The tooltip text container */
+.subfolder-item .tooltip-text {
+  visibility: hidden;
+  width: 200px;
+  background-color:rgba(91, 51, 132, 0.3);
+  color: white;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1000;
+  transform: translateX(80%) translateY(20%);
+}
+
+/* Tooltip visibility on hover */
+.subfolder-item:hover .tooltip-text {
+  visibility: visible;
+  z-index: 1000;
+}
   
   .folder-name {
     margin-left: 5px; /* Add margin between icon and folder name */
@@ -473,15 +519,4 @@
 
   .editor-title {
     font-size: 30px;
-  }
-
-  .instructions {
-    /* background-color: ; #5b3384 */
-    background-color: rgba(91, 51, 132, 0.2);
-    border: 2px solid #8D6EAC;
-    border-radius: 15px;
-    font-size: 13.5px;
-    padding: 10px;
-    margin-right: 30px;
-
   }

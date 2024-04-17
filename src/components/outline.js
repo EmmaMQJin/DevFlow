@@ -93,6 +93,7 @@ export function Outline(props) {
             setShowDragPopup(true);
           }}
         />
+        {/* <div className="tooltip-text">Drag from here and drop on any line of code to link</div> */}
         {beingDragged ? <Xarrow start={ref0} end={ref1} /> : null}
       </React.Fragment>
     );
@@ -108,6 +109,7 @@ export function Outline(props) {
     const ref0 = useRef();
     return (
       <div
+        class = "Boxbox"
         id={boxId}
         style={boxStyle}
         ref={ref0}
@@ -122,7 +124,7 @@ export function Outline(props) {
           }
         }}
       >
-        {text}
+        <span>{text}</span>
         <ConnectPointsWrapper {...{ boxId, handler, ref0 }} />
       </div>
     );
@@ -231,35 +233,11 @@ export function Outline(props) {
               Outline
               <span className="material-symbols-outlined help">help</span>
             </h1>
-
-            <div className="instructions">
-            ⦿ Drag from a white dot next to any outline item to any lines of code to link snippets of code to this item.<br></br>
-            ⦿ Click any outline item to see code snippets linked to it.
-            </div>
             <FolderStructure
                 folders={folders}
                 onToggleFolder={toggleFolder}
             />
           </div>
-            {/* <div className="style-buttons"> */}
-              {/* <button
-                className={`primary-button ${
-                  activeButton === "bulletList" ? "active" : ""
-                }`}
-                onClick={() => handleButtonClick("bulletList")}
-              >
-                Bullet List
-              </button>
-              <button
-                className={`primary-button ${
-                  activeButton === "canvas" ? "active" : ""
-                }`}
-                onClick={() => handleButtonClick("canvas")}
-              >
-                Canvas
-              </button> */}
-            {/* </div> */}
-            {/* Folder structure component */}
           <div className="edit-outline-container">
             {/* Popup Code */}
             <button
@@ -385,11 +363,13 @@ export function Outline(props) {
 
     return (
       <div className="folder-item" style={{ top }}>
+
         <div
           className="folder-toggle"
           onClick={() => onToggleFolder(folder.name)}
           {...getToggleProps()}
         >
+          <div className="tooltip-text">Click to see sub-items</div>
           <span
             className={`material-symbols-outlined ${
               isExpanded ? "folder-open" : "folder"
@@ -403,6 +383,7 @@ export function Outline(props) {
           <ul className="subfolders" {...getCollapseProps()}>
             {folder.children.map((subfolder) => (
               <li key={subfolder.name} className="subfolder-item">
+                <div className="tooltip-text">Click here to see related code snippets.<br></br>Drag from white dot and drop on any line of code to link.</div>
                 <a href="#" onClick={(e) => handleSubfolderClick(e, subfolder.name)}>
                   <Box
                     text={subfolder.name}
