@@ -3,181 +3,16 @@ import Editor from "./editor";
 import "./outline.css";
 import { useCollapse } from "react-collapsed";
 
-import Xarrow from "react-xarrows";
-
-const api_contents = `"""
-file for defining all APIs and endpoints used,
-as well as related utils
-"""
-from parse import parse_info
-
-def get_delivery(info):
-  # define doordash deliveries endpoint
-  endpoint = "https://openapi.doordash.com/drive/v2/deliveries/"
-
-  headers = {"Accept-Encoding": "application/json",
-             "Authorization": "Bearer " + token,
-             "Content-Type": "application/json"}
-
-  # Create POST request
-  create_delivery = requests.post(endpoint, headers=headers, json=info) 
-
-
-def read_menu(filename):
-  # read and parse menu txt`;
-
-const parse_contents = `"""
-util functions for parsing
-"""
-import json
-
-def parse_info(lines):
-    outfile_path = "menu_info.json"
-    for line in lines:
-        parsed = line.strip().split('|')
-        name, pic_link, price = parsed[0], parsed[1], parsed[2]
-        json_obj = {name : name, pic: pic_link, price: price}
-        json.dump(json_obj, outfile_path, indent=4)
-
-`;
-
 export function Outline(props) {
-  const connectPointStyle = {
-    position: "absolute",
-    width: 10,
-    height: 10,
-    borderRadius: "50%",
-    background: "white",
-  };
-  const connectPointOffset = {
-    left: { left: 0, top: "50%", transform: "translate(-50%, -50%)" },
-    right: { left: "100%", top: "50%", transform: "translate(-50%, -50%)" },
-    top: { left: "50%", top: 0, transform: "translate(-50%, -50%)" },
-    bottom: { left: "50%", top: "100%", transform: "translate(-50%, -50%)" },
-  };
-  const [showDragPopup, setShowDragPopup] = useState(false);
 
-  const ConnectPointsWrapper = ({ boxId, handler, ref0 }) => {
-    const ref1 = useRef();
-
-    const [position, setPosition] = useState({});
-    const [beingDragged, setBeingDragged] = useState(false);
-    return (
-      <React.Fragment>
-        <div
-          className="connectPoint"
-          style={{
-            ...connectPointStyle,
-            ...connectPointOffset[handler],
-            ...position,
-          }}
-          draggable
-          onDragStart={(e) => {
-            setBeingDragged(true);
-            e.dataTransfer.setData("arrow", boxId);
-          }}
-          onDrag={(e) => {
-            setPosition({
-              position: "fixed",
-              left: e.clientX,
-              top: e.clientY,
-              transform: "none",
-              opacity: 0,
-            });
-          }}
-          ref={ref1}
-          onDragEnd={(e) => {
-            setPosition({});
-            // e.dataTransfer.setData("arrow", null);
-            setBeingDragged(false);
-            setShowDragPopup(true);
-          }}
-        />
-        {beingDragged ? <Xarrow start={ref0} end={ref1} /> : null}
-      </React.Fragment>
-    );
-  };
-
-  const boxStyle = {
-    position: "relative",
-    padding: "0px 0px",
-    fontSize: 20,
-  };
-
-  const Box = ({ text, handler, addArrow, boxId }) => {
-    const ref0 = useRef();
-    return (
-      <div
-        id={boxId}
-        style={boxStyle}
-        ref={ref0}
-        onDragOver={(e) => e.preventDefault()}
-        onDrop={(e) => {
-          if (e.dataTransfer.getData("arrow") === boxId) {
-            console.log(e.dataTransfer.getData("arrow"), boxId);
-          } else {
-            const refs = { start: e.dataTransfer.getData("arrow"), end: boxId };
-            addArrow(refs);
-            console.log("droped!", refs);
-          }
-        }}
-      >
-        {text}
-        <ConnectPointsWrapper {...{ boxId, handler, ref0 }} />
-      </div>
-    );
-  };
-  //Arrow SAtate
-  const [arrows, setArrows] = useState([]);
-  const addArrow = ({ start, end }) => {
-    setArrows([...arrows, { start, end }]);
-  };
-
-  // State to keep track of the outlineID and colorToUse
+  const [files, setFiles] = useState([]);
+  const [currentFile, setCurrentFile] = useState(null);
   const [outlineID, setOutlineID] = useState("-1");
   const [colorToUse, setColorToUse] = useState("red");
-  const [files] = useState([
-    {
-      name: "apis.py",
-      content: api_contents,
-      linesToColor: {
-        "-1": [],
-        "1": [7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
-        "2": [19, 20, 21, 22, 23],
-      },
-    },
-    {
-      name: "parse.py",
-      content: parse_contents,
-      linesToColor: { "-1": [], "1": [], "2": [6, 7, 8, 9, 10, 11, 12] },
-    },
-    {
-      name: "setup.py",
-      content: "# Python content\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
-      linesToColor: { "-1": [], "1": [], "2": [6, 7, 8] },
-    },
-  ]);
+  const [activeButton, setActiveButton] = useState("");  // Track active button
+  const [showPopup, setShowPopup] = useState(false);     // Popup visibility state
 
-  // State to keep track of the currently selected file
-  // TODO: when the name of current file changes (when we switch to another file), update the lines to update as well
-  const [currentFile, setCurrentFile] = useState(files[0]);
-
-  const handleContentChange = useCallback(
-    (newFile) => {
-      const fileIndex = files.findIndex((file) => file.name === newFile.name);
-      files[fileIndex].content = newFile.content;
-    },
-    [currentFile]
-  );
-
-  // Define handleClickOutline function
-
-  const handleButtonClick = (buttonName) => {
-    setActiveButton(buttonName);
-  };
-  const [activeButton, setActiveButton] = useState(""); // Track active button
-
-  // Folder Structure and dropdown toggle
+  // Define folder structure and toggle functionality
   const [folders, setFolders] = useState([
     {
       name: "Home Page",
@@ -201,17 +36,77 @@ export function Outline(props) {
   ]);
 
   const toggleFolder = (folderName) => {
-    setFolders((prevFolders) =>
-      prevFolders.map((folder) =>
-        folder.name === folderName
-          ? { ...folder, isOpen: !folder.isOpen }
-          : folder
+    setFolders(prevFolders =>
+      prevFolders.map(folder =>
+        folder.name === folderName ? { ...folder, isOpen: !folder.isOpen } : folder
       )
     );
   };
 
-  // Popup window constants
-  const [showPopup, setShowPopup] = useState(false);
+  // Fetch files when the component mounts
+  useEffect(() => {
+    async function fetchFiles() {
+      try {
+        const responses = await Promise.all([
+          fetch('/example-code/apis.py'),
+          fetch('/example-code/parse.py'),
+          fetch('/example-code/setup.py')
+        ]);
+        if (responses.every(response => response.ok)) {
+          const [apiText, parseText, setupText] = await Promise.all(responses.map(response => response.text()));
+          console.log(apiText);
+          const newFiles = [
+            {
+              name: "apis.py",
+              content: apiText,
+              linesToColor: {
+                "-1": [],
+                "1": [7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+                "2": [19, 20, 21, 22, 23],
+              },
+            },
+            {
+              name: "parse.py",
+              content: parseText,
+              linesToColor: { "-1": [], "1": [], "2": [6, 7, 8, 9, 10, 11, 12] },
+            },
+            {
+              name: "setup.py",
+              content: setupText,
+              linesToColor: { "-1": [], "1": [], "2": [6, 7, 8] },
+            }
+          ];
+          setFiles(newFiles);
+          setCurrentFile(newFiles[0]); // Set the first file as the current file after fetching
+        } else {
+          throw new Error('Failed to fetch one or more files');
+        }
+      } catch (error) {
+        console.error("Error fetching files:", error);
+      }
+    }
+    fetchFiles();
+  }, []);
+
+  const handleContentChange = useCallback(
+    (newContent) => {
+      if (currentFile) {
+        const updatedFiles = files.map(file => {
+          if (file.name === currentFile.name) {
+            return { ...file, content: newContent };
+          }
+          return file;
+        });
+        setFiles(updatedFiles);
+        setCurrentFile({ ...currentFile, content: newContent });
+      }
+    },
+    [currentFile, files]
+  );
+
+  const handleButtonClick = (buttonName) => {
+    setActiveButton(buttonName);
+  };
 
   const handleEditOutlineClick = () => {
     setShowPopup(true);
@@ -220,6 +115,8 @@ export function Outline(props) {
   const handlePopupClose = () => {
     setShowPopup(false);
   };
+
+  if (!currentFile) return <div>Loading files...</div>; 
 
   // Main App
   return (
@@ -231,31 +128,12 @@ export function Outline(props) {
               Outline
               <span className="material-symbols-outlined help">help</span>
             </h1>
-            <div className="style-buttons">
-              {/* <button
-                className={`primary-button ${
-                  activeButton === "bulletList" ? "active" : ""
-                }`}
-                onClick={() => handleButtonClick("bulletList")}
-              >
-                Bullet List
-              </button>
-              <button
-                className={`primary-button ${
-                  activeButton === "canvas" ? "active" : ""
-                }`}
-                onClick={() => handleButtonClick("canvas")}
-              >
-                Canvas
-              </button> */}
-
-              <FolderStructure
+            <FolderStructure
                 folders={folders}
                 onToggleFolder={toggleFolder}
-              />
-            </div>
-            {/* Folder structure component */}
+            />
           </div>
+            {/* Folder structure component */}
           <div className="edit-outline-container">
             {/* Popup Code */}
             <button
@@ -304,11 +182,6 @@ export function Outline(props) {
         </aside>
       </main>
 
-      {/* Popup Code */}
-      {/* Popup Window */}
-      {showPopup && <Popup onClose={handlePopupClose} />}
-      {showDragPopup && <DragPopup onClose={() => setShowDragPopup(false)} />}
-
       <footer className="vscode-footer">
         <span>© 2024 DevFlow. All rights reserved.</span>
       </footer>
@@ -343,8 +216,8 @@ export function Outline(props) {
     totalHeight,
     setTotalHeight,
     onToggleFolder,
-    setOutlineID, // Add setOutlineID as a prop
-    setColorToUse, // Add setColorToUse as a prop
+    setOutlineID,
+    setColorToUse,
   }) {
     const { getCollapseProps, getToggleProps, isExpanded } = useCollapse({
       defaultExpanded: folder.isOpen,
@@ -400,10 +273,7 @@ export function Outline(props) {
             {folder.children.map((subfolder) => (
               <li key={subfolder.name} className="subfolder-item">
                 <a href="#" onClick={(e) => handleSubfolderClick(e, subfolder.name)}>
-                  <Box
-                    text={subfolder.name}
-                    {...{ addArrow, handler: "right", boxId: "box2_1" }}
-                  />
+                    {subfolder.name}
                 </a>
               </li>
             ))}
@@ -533,6 +403,4 @@ export function Outline(props) {
       </div>
     );
   }
-
-  console.log("Hello console");
 }
