@@ -52,6 +52,7 @@
   }
   
   .vscode-main {
+    height: 100vh;
     display: flex;
     flex: 1;
   }
@@ -76,18 +77,13 @@
   }
   
   .editor {
+    /* width: 10vw; */
     flex: 1;
     padding: 10px;
     background-color: #1e1e1e; /* Editor background for dark mode */
     color: #fff; /* Light text for editor */
   }
   
-  /* editor placeholder */
-  /* .editor-placeholder {
-    text-align: left;
-    padding-left: 20px;
-    height: 80%;
-  } */
   
   .placeholder-header {
     font-weight: 500;
@@ -316,7 +312,7 @@
     flex-direction: column;
     justify-content: space-between;
     text-align: left;
-    padding-left: 20px;
+    /* padding-left: 20px; */
   }
   
   .style-buttons {
@@ -340,15 +336,22 @@
   /* Popup Styles */
   .popup {
     position: fixed;
+    display: flex;
+    flex-direction: column;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 400px;
+    width: 600px;
+    height: 500px;
     padding: 20px;
     background-color: #333; /* Popup background color */
     color: #fff; /* Popup text color */
     border-radius: 5px;
     z-index: 9999; /* Ensure popup is on top of other elements */
+  }
+
+  .popup-content {
+    height: 400px;
   }
 
   .dragpopup {
@@ -385,7 +388,9 @@
   }
   
   .folder {
+    /* height: 400px; */
     display: flex;
+    /* flex-direction: column; */
     align-items: center;
   }
   

@@ -10,3 +10,8 @@
 .ͼ2 .cm-activeLineGutter {
     background-color: #8D6EAC;
 }
+
+.editor-div {
+    height: 85vh; /* Adjust based on desired fixed height */
+    overflow: auto; /* Enables scrollbar when content overflows */
+}

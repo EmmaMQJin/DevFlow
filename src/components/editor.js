@@ -9,6 +9,7 @@ import {
 import { basicSetup } from "@uiw/codemirror-extensions-basic-setup";
 import { javascript } from "@codemirror/lang-javascript";
 import { python } from "@codemirror/lang-python";
+import { oneDark } from "@codemirror/theme-one-dark";
 import './editor.css';
 
 // Function to determine the language extension based on the file name
@@ -29,7 +30,7 @@ class ColoredGutterMarker extends GutterMarker {
   toDOM() {
     const marker = document.createElement("div");
     marker.style.background = this.color;
-    marker.style.width = "5px"; // Set the width of the block
+    marker.style.width = "12px"; // Set the width of the block
     marker.style.height = "100%";
     return marker;
   }
@@ -46,7 +47,9 @@ const Editor = ({ linesToColor, colorToUse, currentFile, onContentChange }) => {
     const updateListener = EditorView.updateListener.of((update) => {
       // we just want to write to the file contents here
       if (update.docChanged) {
+        console.log("doc changed!!");
         const newContent = update.state.doc.toString();
+        console.log("filename: ", currentFile.name);
         console.log("new content:", newContent);
         onContentChange({ name: currentFile.name, content: newContent });
       }
@@ -55,7 +58,7 @@ const Editor = ({ linesToColor, colorToUse, currentFile, onContentChange }) => {
     const langExtension = getLanguageExtension(currentFile.name);
     // Initialize editor state with custom gutter
     const startState = EditorState.create({
-      doc: currentFile.content,
+      doc: currentFile.content || "",
       extensions: [
         gutter({
           class: "custom-gutter",
@@ -72,6 +75,7 @@ const Editor = ({ linesToColor, colorToUse, currentFile, onContentChange }) => {
         basicSetup(),
         langExtension,
         updateListener,
+        oneDark
       ],
     });
 

@@ -92,7 +92,6 @@ function App() {
             <Outline />
           )}
         </section>
-
         <aside className="terminal">
           <h2 className="terminal-heading">DevFlow</h2>
           <p className="terminal-subheading">Link, Discover, Code.</p>

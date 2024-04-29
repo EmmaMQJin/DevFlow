@@ -39,7 +39,7 @@
 }
 
 .search-bar {
-  flex-grow: 1;
+  /* flex-grow: 1; */
   margin-left: auto;
 }
 
@@ -54,6 +54,7 @@
 .vscode-main {
   display: flex;
   flex: 1;
+  height: 100vh;
 }
 
 .sidebar {
@@ -80,12 +81,6 @@
   padding: 10px;
   background-color: #1e1e1e; /* Editor background for dark mode */
   color: #fff; /* Light text for editor */
-}
-
-/* editor placeholder */
-.editor-placeholder {
-  text-align: left;
-  padding-left: 20px;
 }
 
 .placeholder-header {
@@ -246,13 +241,14 @@
 .edit-outline-container {
   position: absolute;
   top:90%;
-  margin-left: 20px;
+  /* margin-left: 20px; */
 
 }
 
 /* Terminal */
 .terminal {
   width: 65%;
+  /* height: 87.5vh; */
   padding: 10px;
   border-left: 1px solid #444; /* Border color adjusted for dark mode */
   background-color: #222; /* Terminal background for dark mode */
@@ -321,6 +317,9 @@
 }
 
 .editor-placeholder {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   text-align: left;
   padding-left: 20px;
 }

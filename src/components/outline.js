@@ -89,21 +89,26 @@ export function Outline(props) {
   }, []);
 
   const handleContentChange = useCallback(
-    (newContent) => {
+    ({ name, content, linesToColor }) => {
       if (currentFile) {
         const updatedFiles = files.map(file => {
           if (file.name === currentFile.name) {
-            return { ...file, content: newContent };
+            console.log("Updating file:", file.name);
+            return { ...file, content, ...(linesToColor && { linesToColor }) };
           }
           return file;
         });
         setFiles(updatedFiles);
-        setCurrentFile({ ...currentFile, content: newContent });
+        setCurrentFile(prev => ({
+          ...prev,
+          content,
+          ...(linesToColor && { linesToColor })
+        }));
       }
     },
     [currentFile, files]
   );
-
+  
   const handleButtonClick = (buttonName) => {
     setActiveButton(buttonName);
   };
@@ -146,7 +151,6 @@ export function Outline(props) {
         </section>
 
         <aside className="terminal">
-          {/* ... terminal elements ... */}
           <div className="editor-window">
             <div className="file-selector">
               {files.map((file) => {
@@ -154,7 +158,7 @@ export function Outline(props) {
                   file.linesToColor[outlineID].length !== 0;
                 const is_hidden = outlineID !== "2" && file.name === "setup.py";
                 const buttonStyle = is_highlighted
-                  ? { borderBottom: `5px solid ${colorToUse}` }
+                  ? { borderBottom: `10px solid ${colorToUse}` }
                   : {};
                 const buttonClass = is_hidden
                   ? "filename-button-hidden"
@@ -181,11 +185,7 @@ export function Outline(props) {
           </div>
         </aside>
       </main>
-
-      <footer className="vscode-footer">
-        <span>© 2024 DevFlow. All rights reserved.</span>
-      </footer>
-      {/* ... footer ... */}
+      {showPopup && <Popup onClose={handlePopupClose} />}
     </div>
   );
 
@@ -228,11 +228,12 @@ export function Outline(props) {
 
     const handleSubfolderClick = (e, subfolderName) => {
       e.preventDefault();
+      e.stopPropagation();
       console.log(subfolderName);
       if (subfolderName === "Connect Doordash API") {
         // When outlineID is -1, set it to 2 and colorToUse to blue
         setOutlineID("1");
-        setColorToUse("#7F83D3");
+        setColorToUse("#32D4CC");
       } else if (subfolderName === "Read Menu to JSON") {
         setOutlineID("2");
         setColorToUse("#FFEA99");
@@ -243,21 +244,22 @@ export function Outline(props) {
       }
     };
 
-    useEffect(() => {
-      if (isExpanded) {
-        setTotalHeight((prevHeight) => prevHeight + folderHeight);
-      } else {
-        const collapsedHeight = 30 + folder.children.length * 20;
-        setTotalHeight((prevHeight) => prevHeight - collapsedHeight);
-      }
-    }, [isExpanded, folderHeight, folder.children.length, setTotalHeight]);
+    // useEffect(() => {
+    //   if (isExpanded) {
+    //     setTotalHeight((prevHeight) => prevHeight + folderHeight);
+    //   } else {
+    //     const collapsedHeight = 30 + folder.children.length * 20;
+    //     setTotalHeight((prevHeight) => prevHeight - collapsedHeight);
+    //   }
+    // }, [isExpanded, folderHeight, folder.children.length, setTotalHeight]);
+
 
     return (
       <div className="folder-item" style={{ top }}>
         <div
           className="folder-toggle"
           onClick={() => onToggleFolder(folder.name)}
-          {...getToggleProps()}
+          // {...getToggleProps()}
         >
           <span
             className={`material-symbols-outlined ${
