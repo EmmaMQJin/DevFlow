@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import Editor from "./editor";
 import "./outline.css";
 import { useCollapse } from "react-collapsed";
+import ConnectPoint from "./connectpoint";
+import Xarrow from 'react-xarrows';
 
 export function Outline(props) {
 
@@ -20,7 +22,7 @@ export function Outline(props) {
         { name: "Parse info into files" },
         { name: "Format and Display Pics" },
       ],
-      isOpen: false, // Initial state: Open
+      isOpen: false,
     },
     {
       name: "Order Online",
@@ -28,12 +30,17 @@ export function Outline(props) {
         { name: "Connect Doordash API" },
         { name: "Read Menu to JSON" },
       ],
+      isOpen: false,
     },
     {
       name: "Contact Us",
-      children: [{ name: "Format Footer" }],
+      children: [
+        { name: "Format Footer" }
+      ],
+      isOpen: false,
     },
-  ]);
+  ]
+  );
 
   const toggleFolder = (folderName) => {
     setFolders(prevFolders =>
@@ -244,15 +251,19 @@ export function Outline(props) {
       }
     };
 
-    // useEffect(() => {
-    //   if (isExpanded) {
-    //     setTotalHeight((prevHeight) => prevHeight + folderHeight);
-    //   } else {
-    //     const collapsedHeight = 30 + folder.children.length * 20;
-    //     setTotalHeight((prevHeight) => prevHeight - collapsedHeight);
-    //   }
-    // }, [isExpanded, folderHeight, folder.children.length, setTotalHeight]);
+    const [arrows, setArrows] = useState([]);
+    const updateArrows = (boxId, startRef, endRef) => {
+      const newArrows = arrows.map(ar => {
+        if (ar.startId === boxId) return { ...ar, start: startRef.current };
+        if (ar.endId === boxId) return { ...ar, end: endRef.current };
+        return ar;
+      });
+      setArrows(newArrows);
+    };
 
+    const addArrow = ({ start, end }) => {
+      setArrows([...arrows, { start, end }]);
+    };
 
     return (
       <div className="folder-item" style={{ top }}>
@@ -274,9 +285,20 @@ export function Outline(props) {
           <ul className="subfolders" {...getCollapseProps()}>
             {folder.children.map((subfolder) => (
               <li key={subfolder.name} className="subfolder-item">
-                <a href="#" onClick={(e) => handleSubfolderClick(e, subfolder.name)}>
-                    {subfolder.name}
-                </a>
+              <ConnectPoint
+                subfolderName={subfolder.name}
+                handler="right"
+                handleClick={handleSubfolderClick}
+                updateArrows={updateArrows}
+                boxId={subfolder.name}
+              />
+              {arrows.map((ar, index) => (
+                <Xarrow
+                  key={index}
+                  start={ar.start}
+                  end={ar.end}
+                />
+              ))}
               </li>
             ))}
           </ul>

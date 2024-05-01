@@ -15,3 +15,7 @@
     height: 85vh; /* Adjust based on desired fixed height */
     overflow: auto; /* Enables scrollbar when content overflows */
 }
+
+.cm-editor {
+    z-index: 0;
+}
