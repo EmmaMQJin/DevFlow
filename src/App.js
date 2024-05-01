@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./App.css";
 import { Outline } from "./components/outline"; // Import the Outline component from the Outline.js file
-import myVideo from "./demo.mov";
+import myVideo from "./videos/demo.mov";
 export default App;
 
 function TutorialModal({ onClose }) {
@@ -24,15 +24,15 @@ function TutorialModal({ onClose }) {
   };
 
   const stepHeader = {
-    1: "Click outline item to see linked code.",
-    2: "Drag and Drop the white dot on your code to make a link.",
-    3: "Manage your own workflow with DevFlow Canvas.",
+    1: "Manage your own workflow with DevFlow Bullet List or Canvas.",
+    2: "Drag and Drop the dot on your code to make a link.",
+    3: "Click outline item to see linked code.",
   };
 
   const stepText = {
-    1: "Linked code will be highlighted on the code editor window.",
-    2: "Text for step 2",
-    3: "Text for step 3",
+    1: "Pick one of two formats and generate your own outline ",
+    2: "You can manually create a link between your outline item and code snippets.",
+    3: "Linked code will be highlighted on the code editor window.",
   };
 
   return (
