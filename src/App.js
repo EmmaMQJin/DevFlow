@@ -1,8 +1,48 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "./App.css";
 import { Outline } from "./components/outline"; // Import the Outline component from the Outline.js file
 
 export default App;
+
+function TutorialModal({ onClose }) {
+  const [step, setStep] = useState(1);
+
+  const handleNextStep = () => {
+    if (step < 3) {
+      setStep(step + 1);
+    }
+  };
+
+  const handlePrevStep = () => {
+    if (step > 1) {
+      setStep(step - 1);
+    }
+  };
+
+  const handleCloseModal = () => {
+    onClose(); // Call the onClose function provided by the App component
+  };
+
+  return (
+    <div className="modal">
+      <div className="modal-content">
+        <span className="close" onClick={handleCloseModal}>
+          &times;
+        </span>
+        <h2>Tutorial Step {step}</h2>
+        <p>Description of step {step}</p>
+        <div className="button-group">
+          {step > 1 && <button onClick={handlePrevStep}> Previous</button>}
+          {step < 3 ? (
+            <button onClick={handleNextStep}>Next</button>
+          ) : (
+            <button onClick={handleCloseModal}>Finish</button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function App() {
   // TODO: how to make the relevant files pop up?
@@ -14,9 +54,28 @@ function App() {
   const handleFileClick = (file) => {
     setActiveFile(file === "outline" ? "outline" : "main");
   };
+  const [showTutorial, setShowTutorial] = useState(true);
 
+  useEffect(() => {
+    // Check if the user has visited the website before
+    const hasVisitedBefore = localStorage.getItem("hasVisitedBefore");
+
+    // If the user hasn't visited before, show the tutorial
+    if (!hasVisitedBefore) {
+      setShowTutorial(true);
+      // Save that the user has visited the website
+      localStorage.setItem("hasVisitedBefore", "true");
+    }
+  }, []); // Run only once on component mount
+
+  const handleCloseTutorial = () => {
+    setShowTutorial(false);
+  };
   return (
     <div className="vscode-app">
+      {showTutorial && <TutorialModal onClose={handleCloseTutorial} />}
+      {/* Rest of your app content */}
+
       <header className="vscode-header">
         <div className="logo">DevFlow</div>
         <nav className="menu">

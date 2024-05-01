@@ -476,3 +476,85 @@
 .filename-button-hidden {
   display: none;
 }
+/* Modal container */
+.modal {
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; /* Enable scrolling if needed */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal content */
+.modal-content {
+  background-color: #333; /* Purple */
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+  max-width: 600px; /* Set a max width */
+  border-radius: 5px;
+  position: relative;
+}
+
+/* Close button */
+.close {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Button group */
+.button-group {
+  display: flex; /* Use flexbox */
+  justify-content: space-between; /* Align items with space between */
+  margin-top: 20px;
+}
+
+/* Previous button */
+button.previous {
+  margin-right: auto; /* Push the previous button to the left */
+}
+
+/* Next button */
+button.next {
+  margin-left: auto; /* Push the next button to the right */
+}
+
+/* Buttons */
+button {
+  background-color: #502d74; /* Purple */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #2d2139; /* Darker Purple */
+}
+
+/* Disable previous button when at first step */
+button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
