@@ -480,3 +480,23 @@
     margin-right: 30px;
 
   }
+
+  .subfolder-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .connectPoint {
+    background-color: #333333; /* Default background color */
+    transition: background-color 0.3s ease;
+  }
+  
+  .connectPoint:hover {
+    background-color: #8D6EAC; /* Color changes to red when hovered */
+  }
+
+  .subfolder-text {
+    font-size: 16px;
+  }

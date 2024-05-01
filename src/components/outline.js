@@ -4,6 +4,8 @@ import "./outline.css";
 import { useCollapse } from "react-collapsed";
 import ConnectPoint from "./connectpoint";
 import Xarrow from 'react-xarrows';
+import DraggablePoint from "./draggablepoint";
+import { Box } from "./box";
 
 export function Outline(props) {
 
@@ -251,16 +253,24 @@ export function Outline(props) {
       }
     };
 
-    const [arrows, setArrows] = useState([]);
-    const updateArrows = (boxId, startRef, endRef) => {
-      const newArrows = arrows.map(ar => {
-        if (ar.startId === boxId) return { ...ar, start: startRef.current };
-        if (ar.endId === boxId) return { ...ar, end: endRef.current };
-        return ar;
-      });
-      setArrows(newArrows);
+    const [connections, setConnections] = useState([]);
+
+
+    const [showPopup, setShowPopup] = useState(false);
+
+    const handleDragEnd = (id, position) => {
+      // Update connections with new end positions
+      setConnections(current =>
+        current.map(conn => (conn.end === id ? { ...conn, endPos: position } : conn))
+      );
+      // Show the popup after dragging ends
+      setShowPopup(true);
     };
 
+    const handleClosePopup = () => {
+      setShowPopup(false);
+    };
+    const [arrows, setArrows] = useState([]);
     const addArrow = ({ start, end }) => {
       setArrows([...arrows, { start, end }]);
     };
@@ -285,24 +295,37 @@ export function Outline(props) {
           <ul className="subfolders" {...getCollapseProps()}>
             {folder.children.map((subfolder) => (
               <li key={subfolder.name} className="subfolder-item">
-              <ConnectPoint
-                subfolderName={subfolder.name}
+              <div class="subfolder-box">
+              <div class="subfolder-text" onClick={(e) => handleSubfolderClick(e, subfolder.name)}>
+                {subfolder.name}
+              </div>
+              <Box
+                addArrow={addArrow}
                 handler="right"
-                handleClick={handleSubfolderClick}
-                updateArrows={updateArrows}
                 boxId={subfolder.name}
               />
-              {arrows.map((ar, index) => (
-                <Xarrow
-                  key={index}
-                  start={ar.start}
-                  end={ar.end}
-                />
+              </div>
+              {arrows.map(ar => (
+              <Xarrow
+                start={ar.start}
+                end={ar.end}
+                key={ar.start + "-." + ar.end}
+              />
               ))}
               </li>
             ))}
           </ul>
         )}
+        {connections.map((conn, idx) => (
+          <Xarrow
+            key={idx}
+            start={conn.start}
+            end={conn.end}
+            startAnchor="auto"
+            endAnchor="auto"
+            color="magenta"
+          />
+        ))}
       </div>
     );
   }

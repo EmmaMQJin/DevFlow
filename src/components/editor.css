@@ -5,6 +5,7 @@
 .ͼ1 .cm-gutterElement {
     color: #B69DCF;
     font-weight: bold;
+    z-index: -1;
 }
 
 .ͼ2 .cm-activeLineGutter {
@@ -18,4 +19,8 @@
 
 .cm-editor {
     z-index: 0;
+}
+
+.ͼ1 {
+    position: relative;
 }

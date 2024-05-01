@@ -43,6 +43,16 @@ const ConnectPoint = ({ subfolderName, handler, handleClick, updateArrows, boxId
         onDragEnd={e => {
           setBeingDragged(false);
         }}
+        onDragOver={e => e.preventDefault()}
+        onDrop={e => {
+          if (e.dataTransfer.getData("arrow") === boxId) {
+            console.log(e.dataTransfer.getData("arrow"), boxId);
+          } else {
+            const refs = { start: e.dataTransfer.getData("arrow"), end: boxId };
+            updateArrows(refs);
+            console.log("droped!", refs);
+          }
+        }}
         ref={pointRef}
       />
     </div>
