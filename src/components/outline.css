@@ -352,6 +352,13 @@
 
   .popup-content {
     height: 400px;
+    /* display: flex;
+    flex-direction: column;
+    justify-content: flex-start; */
+    align-items: left;
+    padding-left: 30%;
+    font-size: 20px;
+    /* margin-bottom: 30%; */
   }
 
   .dragpopup {
@@ -360,11 +367,15 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 600px;
+    height: 500px;
     padding: 20px;
     background-color: #333; /* Popup background color */
     color: #fff; /* Popup text color */
     border-radius: 5px;
     z-index: 9999; /* Ensure popup is on top of other elements */
+    display: flex;
+    flex-direction: column;
+    
   }
   
   .popup-header {

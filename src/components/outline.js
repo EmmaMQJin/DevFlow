@@ -1,17 +1,15 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Editor from "./editor";
 import "./outline.css";
 import { useCollapse } from "react-collapsed";
-import ConnectPoint from "./connectpoint";
 import Xarrow from 'react-xarrows';
-import DraggablePoint from "./draggablepoint";
 import { Box } from "./box";
 
 export function Outline(props) {
 
   const [files, setFiles] = useState([]);
   const [currentFile, setCurrentFile] = useState(null);
-  const [outlineID, setOutlineID] = useState("-1");
+  const [outlineID, setOutlineID] = useState("");
   const [colorToUse, setColorToUse] = useState("red");
   const [activeButton, setActiveButton] = useState("");  // Track active button
   const [showPopup, setShowPopup] = useState(false);     // Popup visibility state
@@ -59,7 +57,7 @@ export function Outline(props) {
         const responses = await Promise.all([
           fetch('/example-code/apis.py'),
           fetch('/example-code/parse.py'),
-          fetch('/example-code/setup.py')
+          fetch('/example-code/format.py')
         ]);
         if (responses.every(response => response.ok)) {
           const [apiText, parseText, setupText] = await Promise.all(responses.map(response => response.text()));
@@ -69,20 +67,20 @@ export function Outline(props) {
               name: "apis.py",
               content: apiText,
               linesToColor: {
-                "-1": [],
-                "1": [7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
-                "2": [19, 20, 21, 22, 23],
+                "": [],
+                "Connect Doordash API": [15, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114],
+                "Read Menu to JSON": [19, 20, 21, 22, 23],
               },
             },
             {
               name: "parse.py",
               content: parseText,
-              linesToColor: { "-1": [], "1": [], "2": [6, 7, 8, 9, 10, 11, 12] },
+              linesToColor: { "": [], "Connect Doordash API": [], "Read Menu to JSON": [6, 7, 8, 9, 10, 11, 12] },
             },
             {
-              name: "setup.py",
+              name: "format.py",
               content: setupText,
-              linesToColor: { "-1": [], "1": [], "2": [6, 7, 8] },
+              linesToColor: { "": [], "Connect Doordash API": [], "Read Menu to JSON": [6, 7, 8] },
             }
           ];
           setFiles(newFiles);
@@ -165,7 +163,7 @@ export function Outline(props) {
               {files.map((file) => {
                 const is_highlighted =
                   file.linesToColor[outlineID].length !== 0;
-                const is_hidden = outlineID !== "2" && file.name === "setup.py";
+                const is_hidden = outlineID !== "Read Menu to JSON" && file.name === "format.py";
                 const buttonStyle = is_highlighted
                   ? { borderBottom: `10px solid ${colorToUse}` }
                   : {};
@@ -235,37 +233,30 @@ export function Outline(props) {
     const folderHeight = isExpanded ? 30 + folder.children.length * 20 : 30;
     const top = index === 0 ? 0 : totalHeight;
 
+    const [selectedSubfolder, setSelectedSubfolder] = useState(null);
+
     const handleSubfolderClick = (e, subfolderName) => {
       e.preventDefault();
       e.stopPropagation();
+      // Toggle selection or set new subfolder
+      if (outlineID === subfolderName) {
+        setOutlineID("");
+        setSelectedSubfolder(null);
+      } else {
+        setOutlineID(subfolderName)
+        setSelectedSubfolder(subfolderName);
+      }
       console.log(subfolderName);
       if (subfolderName === "Connect Doordash API") {
-        // When outlineID is -1, set it to 2 and colorToUse to blue
-        setOutlineID("1");
         setColorToUse("#32D4CC");
       } else if (subfolderName === "Read Menu to JSON") {
-        setOutlineID("2");
         setColorToUse("#FFEA99");
       } else {
-        // When outlineID is not -1, set it to -1 and colorToUse to red
-        setOutlineID("-1");
         setColorToUse("red");
       }
     };
 
     const [connections, setConnections] = useState([]);
-
-
-    const [showPopup, setShowPopup] = useState(false);
-
-    const handleDragEnd = (id, position) => {
-      // Update connections with new end positions
-      setConnections(current =>
-        current.map(conn => (conn.end === id ? { ...conn, endPos: position } : conn))
-      );
-      // Show the popup after dragging ends
-      setShowPopup(true);
-    };
 
     const handleClosePopup = () => {
       setShowPopup(false);
@@ -296,7 +287,12 @@ export function Outline(props) {
             {folder.children.map((subfolder) => (
               <li key={subfolder.name} className="subfolder-item">
               <div class="subfolder-box">
-              <div class="subfolder-text" onClick={(e) => handleSubfolderClick(e, subfolder.name)}>
+              <div class="subfolder-text" 
+              onClick={(e) => handleSubfolderClick(e, subfolder.name)}
+              style={{
+                color: subfolder.name === outlineID ? colorToUse : 'white',
+                fontWeight: subfolder.name === outlineID ? "bold" : "normal"
+              }}>
                 {subfolder.name}
               </div>
               <Box
@@ -329,54 +325,54 @@ export function Outline(props) {
       </div>
     );
   }
-  function DragPopup({ onClose }) {
-    return (
-      <div className="dragpopup">
-        <div className="popup-header">
-          <h2 className="popup-title">
-            Link Code to Note "Connect Doordash API"
-          </h2>
-          <button className="popup-close" onClick={onClose}>
-            &times;
-          </button>
-        </div>
-        <div className="popup-content">
-          <label>
-            <input
-              type="radio"
-              name="myRadio"
-              value="option1"
-              defaultChecked={true}
-            />
-            Link Line 7
-          </label>
-          <br></br>
-          <label className="popup-deactivated">
-            <input type="radio" name="myRadio" value="option2" />
-            Link get_delivery
-          </label>
-          <br></br>
-          <label className="popup-deactivated">
-            <input type="radio" name="myRadio" value="option3" />
-            Customize the range
-          </label>
-          <br></br>
+  // function DragPopup({ onClose }) {
+  //   return (
+  //     <div className="dragpopup">
+  //       <div className="popup-header">
+  //         <h2 className="popup-title">
+  //           Link Code to Note "Connect Doordash API"
+  //         </h2>
+  //         <button className="popup-close" onClick={onClose}>
+  //           &times;
+  //         </button>
+  //       </div>
+  //       <div className="popup-content">
+  //         <label>
+  //           <input
+  //             type="radio"
+  //             name="myRadio"
+  //             value="option1"
+  //             defaultChecked={true}
+  //           />
+  //           Link Line 7
+  //         </label>
+  //         <br></br>
+  //         <label className="popup-deactivated">
+  //           <input type="radio" name="myRadio" value="option2" />
+  //           Link get_delivery
+  //         </label>
+  //         <br></br>
+  //         <label className="popup-deactivated">
+  //           <input type="radio" name="myRadio" value="option3" />
+  //           Customize the range
+  //         </label>
+  //         <br></br>
 
-          <label className="popup-deactivated">
-            From: <input name="from" />
-          </label>
-          <br></br>
-          <label className="popup-deactivated">
-            To: <input name="to" />
-          </label>
-        </div>
-        <div className="popup-footer">
-          <button className="popup-button cancel">Cancel</button>
-          <button className="popup-button save" onClick={onClose}>Save</button>
-        </div>
-      </div>
-    );
-  }
+  //         <label className="popup-deactivated">
+  //           From: <input name="from" />
+  //         </label>
+  //         <br></br>
+  //         <label className="popup-deactivated">
+  //           To: <input name="to" />
+  //         </label>
+  //       </div>
+  //       <div className="popup-footer">
+  //         <button className="popup-button cancel">Cancel</button>
+  //         <button className="popup-button save" onClick={onClose}>Save</button>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   function Popup({ onClose }) {
     const folders = [

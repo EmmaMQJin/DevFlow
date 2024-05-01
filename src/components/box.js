@@ -1,32 +1,40 @@
-import React, { useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import Xarrow from 'react-xarrows';
+import DragPopup from './dragpopup';
 
 const connectPointStyle = {
     position: "absolute",
     width: "15px",
     height: "15px",
     borderRadius: "50%",
-    // transform: "translate(-50%, -50%)",  // Center in the larger area
-    cursor: "pointer"  // Indicates this is a draggable area
+    cursor: "pointer"
   };
 
   const connectPointWrapperStyle = {
     position: "absolute",
-    width: "30px",  // Larger touch area
-    height: "30px",  // Larger touch area
-    left: "50%",  // Centering the wrapper on the desired point
-    top: "50%",  // Centering the wrapper on the desired point
-    transform: "translate(-50%, -50%)",  // Ensuring it's centered correctly
+    width: "30px",
+    height: "30px",
+    left: "50%",
+    top: "50%",
+    transform: "translate(-50%, -50%)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    zIndex: 10  // Ensures it's above other content
+    zIndex: 10 
 };
 
-const ConnectPointsWrapper = ({ boxId, handler, ref0 }) => {
+const ConnectPointsWrapper = ({ ref0, handler, boxId}) => {
   const ref1 = useRef();
   const [position, setPosition] = React.useState({});
   const [beingDragged, setBeingDragged] = React.useState(false);
+  const [showPopup, setShowPopup] = useState(false); // State to control popup visibility
+
+  const handleDragEnd = e => {
+    setPosition({});
+    setBeingDragged(false);
+    setShowPopup(true); // Show the popup when dragging ends
+  };
+
   return (
     <React.Fragment>
         <div
@@ -46,15 +54,13 @@ const ConnectPointsWrapper = ({ boxId, handler, ref0 }) => {
                     opacity: 0
                 });
             }}
-            onDragEnd={e => {
-                setPosition({});
-                setBeingDragged(false);
-            }}
+            onDragEnd={handleDragEnd}
             ref={ref1}
         >
             <div className="connectPoint" style={connectPointStyle} />
         </div>
         {beingDragged && <Xarrow start={ref0} end={ref1} color="#8D6EAC" />}
+        {showPopup && <DragPopup onClose={() => setShowPopup(false)}  folderName={boxId} />}
     </React.Fragment>
   );
 };
@@ -65,7 +71,6 @@ const boxStyle = {
   height: "20px", 
   position: "relative",
   borderRadius: "50%", 
-//   padding: "20px 10px"
 };
 
 
