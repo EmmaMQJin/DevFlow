@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./App.css";
 import { Outline } from "./components/outline"; // Import the Outline component from the Outline.js file
-
+import myVideo from "./demo.mov";
 export default App;
 
 function TutorialModal({ onClose }) {
@@ -23,18 +23,40 @@ function TutorialModal({ onClose }) {
     onClose(); // Call the onClose function provided by the App component
   };
 
+  const stepHeader = {
+    1: "Click outline item to see linked code.",
+    2: "Drag and Drop the white dot on your code to make a link.",
+    3: "Manage your own workflow with DevFlow Canvas.",
+  };
+
+  const stepText = {
+    1: "Linked code will be highlighted on the code editor window.",
+    2: "Text for step 2",
+    3: "Text for step 3",
+  };
+
   return (
     <div className="modal">
       <div className="modal-content">
         <span className="close" onClick={handleCloseModal}>
           &times;
         </span>
-        <h2>Tutorial Step {step}</h2>
-        <p>Description of step {step}</p>
+        <h2>{stepHeader[step]}</h2>
+        <p>{stepText[step]}</p>
+        <video className="tutorial-video" autoPlay loop muted>
+          <source src={myVideo} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
         <div className="button-group">
-          {step > 1 && <button onClick={handlePrevStep}> Previous</button>}
+          {step > 1 && (
+            <button className="previous" onClick={handlePrevStep}>
+              Previous
+            </button>
+          )}
           {step < 3 ? (
-            <button onClick={handleNextStep}>Next</button>
+            <button className="next" onClick={handleNextStep}>
+              Next
+            </button>
           ) : (
             <button onClick={handleCloseModal}>Finish</button>
           )}
