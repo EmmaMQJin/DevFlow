@@ -12,6 +12,9 @@ export function Outline(props) {
   const [activeButton, setActiveButton] = useState("");  // Track active button
   const [showPopup, setShowPopup] = useState(false);     // Popup visibility state
 
+  const [editedFolders, setEditedFolders] = useState([]); // Initialize with original folders
+
+
   // Define folder structure and toggle functionality
   const [folders, setFolders] = useState([
     {
@@ -115,6 +118,7 @@ export function Outline(props) {
 
   const handleEditOutlineClick = () => {
     setShowPopup(true);
+    setEditedFolders([...folders]); // Initialize with original folders
   };
 
   const handlePopupClose = () => {
@@ -334,59 +338,57 @@ export function Outline(props) {
   }
 
   function Popup({ onClose }) {
-    const folders = [
-      {
-        name: "Bakery Website",
-        children: [
-          {
-            name: "Home Page",
-            children: [
-              { name: "Parse info into files" },
-              { name: "Format and Display Pics" },
-            ],
-          },
-          {
-            name: "Order Online",
-            children: [
-              { name: "Connect Doordash API" },
-              { name: "Read Menu to JSON" },
-            ],
-          },
-          {
-            name: "Contact Us",
-            children: [{ name: "Format Footer" }],
-          },
-        ],
-      },
-    ];
+    const [editedFolders, setEditedFolders] = useState([...folders]);
 
-    const renderFolder = (folder) => (
-      <div key={folder.name} className="folder">
-        <span className="material-symbols-outlined">menu</span>
-        <span className="folder-name">{folder.name}</span>
+    const handleFolderNameChange = (e, folderIndex) => {
+      const newFolders = editedFolders.map((folder, index) => {
+        if (index === folderIndex) {
+          return { ...folder, name: e.target.value };
+        }
+        return folder;
+      });
+      setEditedFolders(newFolders);
+    };
+  
+    const handleSubfolderNameChange = (e, folderIndex, subfolderIndex) => {
+  const newFolders = editedFolders.map((folder, index) => {
+    if (index === folderIndex) {
+      const newChildren = folder.children.map((subfolder, subIndex) => {
+        if (subIndex === subfolderIndex) {
+          return { ...subfolder, name: e.target.value };
+        }
+        return subfolder;
+      });
+      return { ...folder, children: newChildren };
+    }
+    return folder;
+  });
+  setEditedFolders(newFolders);
+};
+  
+    const renderFolder = (folder, folderIndex) => (
+      <div key={folderIndex} className="popup-folder">
+        <input
+          type="text"
+          value={folder.name}
+          onChange={(e) => handleFolderNameChange(e, folderIndex)}
+        />
         {folder.children && (
-          <ul className="subfolders">
-            {folder.children.map((subfolder) => (
-              <li key={subfolder.name} className="subfolder">
-                <span className="material-symbols-outlined">menu</span>
-                <span className="folder-name">{subfolder.name}</span>
-                {subfolder.children && (
-                  <ul className="sub-subfolders">
-                    {subfolder.children.map((subSubfolder) => (
-                      <li key={subSubfolder.name} className="sub-subfolder">
-                        <span className="material-symbols-outlined">menu</span>
-                        <span className="folder-name">{subSubfolder.name}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
+          <ul className="popup-subfolders">
+            {folder.children.map((subfolder, subfolderIndex) => (
+              <li key={subfolderIndex} className="popup-subfolder">
+                <input
+                  type="text"
+                  value={subfolder.name}
+                  onChange={(e) => handleSubfolderNameChange(e, folderIndex, subfolderIndex)}
+                />
               </li>
             ))}
           </ul>
         )}
       </div>
     );
-
+  
     return (
       <div className="popup">
         <div className="popup-header">
@@ -396,11 +398,11 @@ export function Outline(props) {
           </button>
         </div>
         <div className="popup-content">
-          {folders.map((folder) => renderFolder(folder))}
+          {editedFolders.map((folder, folderIndex) => renderFolder(folder, folderIndex))}
         </div>
         <div className="popup-footer">
-          <button className="popup-button cancel">Cancel</button>
-          <button className="popup-button save">Save</button>
+          <button className="popup-button cancel" onClick={onClose}>Cancel</button>
+          <button className="popup-button save" onClick={() => { onClose(); setFolders(editedFolders); }}>Save</button>
         </div>
       </div>
     );

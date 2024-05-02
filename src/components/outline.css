@@ -1,4 +1,8 @@
 /** @format */
+ul{
+  list-style-type: none;
+}
+
 .vscode-app {
     display: flex;
     flex-direction: column;
@@ -336,23 +340,40 @@
   /* Popup Styles */
   .popup {
     position: fixed;
-    display: flex;
-    flex-direction: column;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 600px;
-    height: 500px;
+    background-color: #333; 
     padding: 20px;
-    background-color: #333; /* Popup background color */
-    color: #fff; /* Popup text color */
     border-radius: 5px;
-    z-index: 9999; /* Ensure popup is on top of other elements */
+    max-width: 350px; /* Set max-width to make the popup narrower */
+    width: 100%;
+  }
+  
+  .popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .popup-content {
+    text-align: left; /* Align content to the left */
+    line-height: 27px;
+  }
+  
+  .popup-folder-name {
+    font-weight: normal;
+    font-size: 14px;
+  }
+  
+  .popup-subfolder {
+    margin-bottom: 10px;
   }
 
   .popup-content {
-    height: 400px;
-  }
+    height: auto;
+  } 
 
   .dragpopup {
     position: fixed;
@@ -376,7 +397,7 @@
   
   .popup-title {
     font-size: 20px;
-    margin: 0;
+    margin-bottom: 10px;
   }
   
   .popup-close {
@@ -387,16 +408,52 @@
     cursor: pointer;
   }
   
-  .folder {
-    /* height: 400px; */
+  .popup-folder input {
+    flex: 1;
+    margin-top: 5px;
+    padding: 5px;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Bottom border for input */
+    background-color: transparent; /* Transparent background */
+    color: #fff; /* Text color */
+    outline: none; /* Remove outline */
+  }
+  
+  .popup-folder input:focus {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.7); /* Bottom border color on focus */
+  }
+  
+  .popup-subfolder {
+    margin-bottom: 5px;
+  }
+  
+  .popup-footer {
     display: flex;
-    /* flex-direction: column; */
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+
+  /* .popup-folder input {
+    border: none; 
+    outline: none;
+    background-color: transparent;
+    color: #fff; 
+    font-size: 14px; 
+    padding: 5px; 
+  }
+  
+  .popup-folder input:focus {
+    border-bottom: greenyellow; /* Remove border when input is focused 
+    outline: none; */
+  
+  /* .folder {
+      display: flex;
     align-items: center;
   }
   
   .folder-name {
     margin-left: 5px;
-    font-size: 24px; /* Reduce font size */
+    font-size: 24px; 
   }
   
   .subfolders {
@@ -408,17 +465,17 @@
   
   .subfolder-item {
     margin-bottom: 4px;
-    font-size: 13px; /* Reduce font size */
+    font-size: 13px; 
   }
   
   .subfolder-item a {
     text-decoration: none;
-    color: #747474; /* Light text for subfolder items */
-    font-size: 13px; /* Adjust font size for subfolder items */
+    color: #747474; 
+    font-size: 13px; 
   }
   
   .subfolder-item a:hover {
-    color: #fff; /* Changes text color to white on hover */
+    color: #fff; 
   }
   
   .sub-subfolders {
@@ -434,12 +491,13 @@
   
   .sub-subfolder .folder-name {
     margin-left: 5px;
-    font-size: 13px; /* Reduce font size */
-  }
+    font-size: 13px; 
+  } */
+
   .popup-footer {
     display: flex;
     justify-content: flex-end;
-    margin-top: 20px;
+    margin-top: 40px;
   }
   .popup-deactivated {
     color: #999;
