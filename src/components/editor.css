@@ -1,0 +1,26 @@
+.ͼ2 .cm-gutters {
+    background-color: #222222;
+}
+
+.ͼ1 .cm-gutterElement {
+    color: #B69DCF;
+    font-weight: bold;
+    z-index: -1;
+}
+
+.ͼ2 .cm-activeLineGutter {
+    background-color: #8D6EAC;
+}
+
+.editor-div {
+    height: 85vh; /* Adjust based on desired fixed height */
+    overflow: auto; /* Enables scrollbar when content overflows */
+}
+
+.cm-editor {
+    z-index: 0;
+}
+
+.ͼ1 {
+    position: relative;
+}
